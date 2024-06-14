@@ -17,42 +17,49 @@ This script processes images by cropping and rotating them.
 2. Adjust the `crop_coords` variable to specify the cropping area (in the format `(x1, y1, x2, y2)`).
 3. Run the script, and it will process the images and save the results in the `Processed` directory.
 
-```python
-import os
-import cv2
-import numpy as np
+## Image Processing and Analysis
 
-def crop_and_rotate_images(input_folder, output_folder, crop_coords):
-    os.makedirs(output_folder, exist_ok=True)
+This script processes images to analyze specific regions of interest (ROI) for certain characteristics such as area and circularity. It works in two main stages: initialization and processing.
 
-    image_files = [f for f in os.listdir(input_folder) if f.endswith(('.jpg', '.jpeg', '.png'))]
+### Initialization (`init` function)
 
-    for image_file in image_files:
-        try:
-            image_path = os.path.join(input_folder, image_file)
-            image = cv2.imread(image_path)
-            if image is None:
-                print(f"Error: Unable to read {image_path}")
-                continue
+1. **Read Images**: It reads grayscale images from the specified input directory (`input_dir`).
+2. **Convert to BGR**: Converts each grayscale image to BGR (3-channel) format.
+3. **Save Images**: Saves the converted images to the specified combination directory (`combdir`).
 
-            rotated_image = cv2.rotate(image, cv2.ROTATE_90_COUNTERCLOCKWISE)
+### Processing (`image_process` function)
 
-            x1, y1, x2, y2 = crop_coords
-            x1 = max(0, x1)
-            y1 = max(0, y1)
-            x2 = min(rotated_image.shape[1], x2)
-            y2 = min(rotated_image.shape[0], y2)
-            roi = rotated_image[y1:y2, x1:x2]
-            output_path = os.path.join(output_folder, image_file)
-            cv2.imwrite(output_path, roi)
+1. **Define ROIs and Thresholds**: The script processes specified ROIs using given thresholds for area and circularity.
+2. **Invert and Blur Images**: Each image is inverted and blurred to prepare for thresholding.
+3. **Thresholding**: Applies a binary threshold to isolate certain features within the ROI.
+4. **Contour Detection**: Detects contours within the thresholded ROI to find areas of interest.
+5. **Analyze Contours**: Each contour is analyzed based on area and circularity to determine if it meets the specified criteria.
+6. **Mark Results**: The script marks each division within the ROI as "E" (eligible) or "NE" (not eligible) based on the analysis and visualizes the results by drawing on the images.
+7. **Save Processed Images and Results**: The processed images and the analysis results are saved to the specified output directory and results file, respectively.
 
-            print(f"Processed: {image_file}")
+### Usage Instructions
 
-        except Exception as e:
-            print(f"Error processing {image_file}: {e}")
+1. Place the images you want to process in the `Processed` directory.
+2. Define the ROIs and thresholds for each area. For example:
+   - `a1 = [20, 1320, 1170, 180]`
+   - `a2 = [20, 1320, 1020, 155]`
+   - `a3 = [1620, 1220, 30, 155]`
+   - `a4 = [1650, 1220, 860, 155]`
+3. Initialize the `combdir` directory using the `init` function.
+4. Run the `image_process` function for each area with the defined ROIs and thresholds.
+5. The script will save the processed images in the specified output directories and the results in the specified results files.
 
-if __name__ == "__main__":
-    input_folder = "4x_images"
-    output_folder = "Processed"
-    crop_coords = (0, 600, 3000, 2400)
-    crop_and_rotate_images(input_folder, output_folder, crop_coords)
+### Example Usage
+
+1. Initialize the combination directory:
+    ```python
+    init(input_directory, comb_img_dir)
+    ```
+
+2. Process images for each area with defined ROIs and thresholds:
+    ```python
+    image_process(input_directory, output_directory, results_file, comb_img_dir, a1, 7100, 0.718)
+    image_process(input_directory, output_directory2, results_file2, comb_img_dir, a2, 7100, 0.718)
+    image_process(input_directory, output_directory3, results_file3, comb_img_dir, a3, 7100, 0.718)
+    image_process(input_directory, output_directory4, results_file4, comb_img_dir, a4, 19000, 0)
+    ```
