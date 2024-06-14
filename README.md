@@ -17,6 +17,16 @@ This script processes images by cropping and rotating them.
 2. Adjust the `crop_coords` variable to specify the cropping area (in the format `(x1, y1, x2, y2)`).
 3. Run the script, and it will process the images and save the results in the `Processed` directory.
 
+### Before and After
+
+#### Before
+
+![Before](4x_images/2.jpg)
+
+#### After
+
+![After](Processed/2.jpg)
+
 ## Image Processing and Analysis
 
 This script processes images to analyze specific regions of interest (ROI) for certain characteristics such as area and circularity. It works in two main stages: initialization and processing.
@@ -48,6 +58,16 @@ This script processes images to analyze specific regions of interest (ROI) for c
 3. Initialize the `combdir` directory using the `init` function.
 4. Run the `image_process` function for each area with the defined ROIs and thresholds.
 5. The script will save the processed images in the specified output directories and the results in the specified results files.
+
+### Before and After
+
+#### Before
+
+![Before](path/to/your/before_image.jpg)
+
+#### After
+
+![After](path/to/your/after_image.jpg)
 
 ### Example Usage
 
