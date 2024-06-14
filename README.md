@@ -63,11 +63,16 @@ This script processes images to analyze specific regions of interest (ROI) for c
 
 #### Before
 
-![Before](path/to/your/before_image.jpg)
+![Before](Processed/2.jpg)
 
 #### After
 
-![After](path/to/your/after_image.jpg)
+![After](Area_1/2.jpg)
+
+
+#### Final Image
+![Final](Combdir/2.jpg)
+
 
 ### Example Usage
 
